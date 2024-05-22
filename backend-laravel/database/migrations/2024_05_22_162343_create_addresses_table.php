@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('credit_cards', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->integer('number');
-            $table->date('expiration_date');
-            $table->integer('cvv');
+            $table->string('zipcode');
+            $table->string('street');
+            $table->string('number');
+            $table->string('neighborhood');
+            $table->string('city');
+            $table->string('state');
+            $table->string('country');
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('credit_cards');
+        Schema::dropIfExists('addresses');
     }
 };
