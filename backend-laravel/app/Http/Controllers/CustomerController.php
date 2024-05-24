@@ -2,63 +2,93 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request) //rota: GET /customers
     {
-        //
+        try{
+            $limit = $request->query('limit', 5); //Limite de linhas para paginação
+
+            $customersDB = Customer::query() //Pegar todos os clientes...
+                ->where('fullName', 'like', '%'.$request->query('filter').'%') //...onde nome completo contêm o valor do filtro...
+                ->paginate($limit); //...e criar paginação com o limite de retorno de dados por requisição
+            
+            return response()->json($customersDB->items(), 200); //Retornar os itens filtrados e paginados
+
+        }catch(\Exception $e) { 
+            return response()->json(["message"=> $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request) //rota: POST /customers
     {
-        //
+        try {
+            $validatedData = $request->validate([
+                'firstName' => 'required|string|max:100',
+                'lastName' => 'required|string|max:100',
+                'email' => 'required|email|unique:customers,email',
+                'birthdate' => 'required|date|before:today',
+                'phone' => 'nullable|string|max:20',
+                'address' => 'nullable|string|max:255',
+            ]);
+
+            $validatedData['fullName'] = $validatedData['firstName'].' '.$validatedData['lastName'];
+
+            Customer::create($validatedData);
+
+            return response()->json(["message"=>"Dados cadastrado com sucesso!"], 201);
+
+        } catch(\Exception $e) {
+            return response()->json(["message"=> $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(string $id) //rota: GET /customer/{id}
     {
-        //
+        try{
+            $customerDB = Customer::findOrFail($id);
+            return response()->json($customerDB, 200);
+
+        }catch(\Exception $e) { 
+            return response()->json(["message"=> $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request, string $id) //rota: PUT /customer/{id}
     {
-        //
+        try{
+            $validatedData = $request->validate([
+                'firstName' => 'required|string|max:255',
+                'lastName' => 'required|string|max:255',
+                'email' => 'required|email|unique:customers,email,' . $id,
+                'birthdate' => 'required|date',
+                'phone' => 'nullable|string|max:20',
+                'address' => 'nullable|string|max:255',
+            ]);
+        
+            $validatedData['fullName'] = $validatedData['firstName'] . ' ' . $validatedData['lastName'];
+        
+            $customerDB = Customer::findOrFail($id);
+            $customerDB->update($validatedData);
+
+            return response()->json(["message"=>"Dados atualizados com sucesso!"], 200);
+
+        }catch(\Exception $e) {
+            return response()->json(["message"=> $e->getMessage()], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(string $id) //rota: DELETE /customer/{id}
     {
-        //
-    }
+        try{
+            Customer::destroy($id);
+            return response()->json(["message"=>"Dados deletados com sucesso!"], 200);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        }catch(\Exception $e) { 
+            return response()->json(["message"=> $e->getMessage()], 500);
+        }
     }
 }

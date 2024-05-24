@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('credit_cards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->integer('number');
+            $table->string('number');
             $table->date('expiration_date');
-            $table->integer('cvv');
+            $table->string('cvv');
             $table->timestamps();
         });
     }
