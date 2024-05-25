@@ -31,8 +31,8 @@ export default function CustomerCreate() {
   };
 
     return (
-      <main className="grid min-h-screen flex-col p-4 justify-center">
-        <Link href="/customers" className="bg-red-600 text-white py-2 px-4 border-2 rounded-xl hover:bg-red-800 -rotate-12 z-10 w-[5rem] translate-y-5 -translate-x-5">Voltar</Link>
+      <main className="grid min-h-screen p-4 justify-center place-items-start">
+        <Link href="/customers" className="self-end bg-red-600 text-white py-2 px-4 border-2 rounded-xl hover:bg-red-800 -rotate-12 z-10 w-[5rem] translate-y-5 -translate-x-5">Voltar</Link>
         <form onSubmit={e=>onSubmit(e)} className="shadow-lg border-2 overflow-hidden border-blue-500 rounded-3xl mx-auto max-w-xl sm:w-[30rem] flex flex-col">
           <header className="px-8 py-4 bg-blue-400 text-white">
             <legend className="text-xl md:text-2xl font-bold">Formulário de Cliente</legend>
