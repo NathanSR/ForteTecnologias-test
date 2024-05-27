@@ -1,10 +1,16 @@
-Esse projeto é um teste para a empresa Forte Solutions. Foi exigido a construção de um sistema FullStack para gerenciar clientes e cartões de crédito, onde o backend seria desenvolvido com Laravel e o frontend com NextJS + TailwindCSS. 
+Esse projeto é um teste para a empresa Forte Solutions no ano de 2024. Foi exigido a construção de um sistema FullStack para gerenciar clientes e cartões de crédito, onde o backend seria desenvolvido com Laravel e o frontend com NextJS + TailwindCSS. 
 
 Comandos para iniciar o servidor em development mode:
 
->> php -S localhost:8000 -t public/
-ou
+backend:
+>> cd backend-laravel
 >> php artisen serve
+
+frontend:
+>> cd frontend-next
+>> npm run dev
+
+(OBS: O frontend só vai fazer chamadas para a API se ela estiver na porta 8000. Caso a API não tenha iniciado na porta solicitada, altere no arquivo 'next.config.mjs' o número da porta pelo valor iniciado pelo servidor)
 
 
 
@@ -44,6 +50,21 @@ Após todas as rotas serem testadas e bem sucedidas, foi-se iniciado a construç
 
 
 FRONTEND
+
+Foi criado o projeto next-ts + tailwindCSS pelo comando:
+
+>> npx create-next-app app-name
+
+Depois foram configurados, consecutivamente, as páginas do projeto listadas abaixo: 
+> / = página inicial
+> /customers = pagina com tabela de cliente paginada e filtro;
+> /customers/create = formulário para registrar  novo cliente
+> /customers/[id] = ver dados de um cliente, seus cartões e/ou poder excluí-los;
+> /customers/[id]/edit = editar dados de um cliente
+> /customers/[id]/cards/:[idCard]/create = adicionar um novo cartão ao cliente associado
+> /customers/[id]/cards/:[idCard]/edit = editar o cartão do cliente associado
+
+
 
 
 
