@@ -13,7 +13,7 @@ backend:
 cd backend-laravel
 composer install
 php artisan migrate
-php artisen serve
+php artisan serve
 ```
 
 frontend:
