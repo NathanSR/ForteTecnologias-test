@@ -3,23 +3,24 @@ Esse projeto é um teste para a empresa Forte Solutions no ano de 2024. Foi exig
 
 Comando para clonar o repositório:
 ```bash
-$ git clone https://github.com/NathanSR/ForteTecnologias-test.git
+git clone https://github.com/NathanSR/ForteTecnologias-test.git
 ```
 
 Comandos para iniciar o servidor em development mode:
 
 backend:
 ```bash
-$ cd backend-laravel
-$ composer install
-$ php artisen serve
+cd backend-laravel
+composer install
+php artisan migrate
+php artisen serve
 ```
 
 frontend:
 ```bash
-$ cd frontend-next
-$ npm install
-$ npm run dev
+cd frontend-next
+npm install
+npm run dev
 ```
 
 (OBS: O frontend só vai fazer chamadas para a API se ela estiver na porta 8000. Caso a API não tenha iniciado na porta solicitada, altere no arquivo 'next.config.mjs' o número da porta pelo valor iniciado pelo servidor)
@@ -38,27 +39,27 @@ $ npm run dev
 Primeiramente, foi necessário fazer a construção da API. Para que o laravel atue como uma API, foi usado o comando abaixo:
 
 ```bash
-$ php artisan install:api
+php artisan install:api
 ```
 
 Após a configuração inicial, deveria ser criado os models e schemas de cada entidade envolvida na aplicação (cliente, cartão de crédito). O comando abaixo serviu para criar os Models e Migrations: 
 
 ```bash
-$ php artisan make:model Customer -m
-$ php artisan make:model CreditCard -m
+php artisan make:model Customer -m
+php artisan make:model CreditCard -m
 ```
 
 Nos arquivos de Model, foram especificados em 'fillable' os atributos(colunas) respectivos a cada tabela. Também foram definidos em migrations os tipos das colunas das tabelas. Em seguida, foi executado o comando para iniciar a migração do novo banco(que por padrão era o SQLite):
 
 ```bash
-$ php artisan migrate
+php artisan migrate
 ```
 
 Após criado o banco, com o comando abaixo foi construido os controllers de cliente e de cartão, possuindo as funções index, store, show, update e destroy que representam o CRUD para cada Model:
 
 ```bash
-$ php artisan make:controller CustomerController --api
-$ php artisan make:controller CreditCardController --api
+php artisan make:controller CustomerController --api
+php artisan make:controller CreditCardController --api
 ```
 
 No index do controller de clientes foi configurado para opcionalmente receber uma QueryString 'filter' onde contêm o nome do cliente para ser pesquisado, além de também poder receber a QueryString "limit" representando o limite de dados que podem ser retornados por requisição durante a paginação.
@@ -74,7 +75,7 @@ Após todas as rotas serem testadas e bem sucedidas, foi-se iniciado a construç
 Foi criado o projeto next-ts + tailwindCSS pelo comando:
 
 ```bash
-$ npx create-next-app app-name
+npx create-next-app app-name
 ```
 
 Depois foram configurados, consecutivamente, as páginas do projeto listadas abaixo: 
