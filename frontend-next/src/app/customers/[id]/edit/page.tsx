@@ -36,6 +36,23 @@ export default function CustomerEdit() {
 			})
 	};
 
+	const showModalCEP = () => {
+		Swal.fire({
+			title: 'Informe seu CEP:',
+			input: 'text',
+			inputPlaceholder: "00000-000",
+			showCancelButton: true,
+			confirmButtonText: 'Procurar',
+			cancelButtonText: 'Cancelar',
+			preConfirm: async (valueCEP) =>
+				await axios.get(`https://viacep.com.br/ws/${valueCEP.replace(/\D/g, '')}/json/`)
+					//@ts-ignore
+					.then((resp) => setCustomer({...customer, address: [`Rua: ${resp.data['logradouro'] || "_"}`, `complemento: ${resp.data['complemento'] || "_"}`, `bairro: ${resp.data['bairro'] || "_"}`, resp.data['localidade'], resp.data['uf'], resp.data['cep']].filter(Boolean).join(', ')}))
+					//@ts-ignore
+					.catch((error: AxiosError) => { Swal.fire({ icon: 'error', title: 'Erro!', text: error.response?.data?.message, }) })
+		})
+	}
+
 	return (
 		<main className="grid min-h-screen p-4 justify-center place-items-start">
 			<Link href={`/customers/${id}`} className="self-end bg-red-600 text-white py-2 px-4 border-2 rounded-xl hover:bg-red-800 -rotate-12 z-10 w-[5rem] translate-y-5 -translate-x-5">Voltar</Link>
@@ -65,8 +82,11 @@ export default function CustomerEdit() {
 						<InputMask mask="(99) 99999-9999" type="tel" name="phone" onChange={onChangeCustomer} value={customer?.phone} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="(99) 99999-9999" required />
 					</div>
 					<div>
-						<label htmlFor="address" className="block text-sm font-medium text-gray-900 ">Endereço</label>
-						<input type="textarea" name="address" onChange={onChangeCustomer} value={customer?.address} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Rua Tal, nº 8, bairr..." required />
+						<label htmlFor="address" className="block text-sm font-medium text-gray-900 ">
+							Endereço
+							<button type="button" className="text-xs text-blue-700 underline ml-2" onClick={showModalCEP}>(Pesquisar por CEP)</button>
+						</label>
+						<input name="address" onChange={onChangeCustomer} value={customer?.address} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Rua Tal, complemento, bairr..." required />
 					</div>
 				</main>
 				<footer className="px-8 py-4 flex justify-center bg-white">

@@ -5,51 +5,78 @@
 @import url('react-credit-cards-2/dist/es/styles-compiled.css');
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
 }
 
 body {
-  color: rgb(100, 100, 100);
-  background: linear-gradient(
-      to bottom,
-      rgb(251, 251, 251),
-      rgb(216, 216, 216)
-    );
+	color: rgb(100, 100, 100);
+	background: linear-gradient(to bottom,
+			rgb(251, 251, 251),
+			rgb(216, 216, 216));
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	.text-balance {
+		text-wrap: balance;
+	}
 }
 
 /* Deixar Scroll mais bonito */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+	width: 12px;
+	height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #fff; 
-  border-radius: 10px;
-  border: 1px solid rgb(177, 177, 177);
+	background: #fff;
+	border-radius: 10px;
+	border: 1px solid rgb(177, 177, 177);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #999; 
-  border-radius: 10px;
+	background: #999;
+	border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #666; 
+	background: #666;
+}
+
+/* Ajustar tamanho do cartão de demonstração */
+@media (max-width: 450px) {
+	.rccs,
+	.rccs__card {
+		width: 100%;
+		height: 150px;
+	}
+	.rccs__number, .rccs__name, .rccs__expiry__value{
+		font-size: 14px;
+	}
+	.rccs__name{
+		padding-right: 1rem;
+		font-size: 12px;
+		max-height: 1.5rem;
+		white-space: pre-line;
+		overflow: hidden;
+	}
+}
+.rccs__expiry__valid{
+	position: relative;
+	width: 1;
+	color: transparent;
+}
+.rccs__expiry__valid::before{
+	content: "validade";
+	color: white;
+	position: absolute;
 }

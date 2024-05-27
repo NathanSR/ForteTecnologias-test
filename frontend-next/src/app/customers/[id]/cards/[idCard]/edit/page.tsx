@@ -9,20 +9,23 @@ import Cards from 'react-credit-cards-2';
 import moment from "moment";
 import InputMask from "react-input-mask";
 
-export default function CardCreate() {
+export default function CardEditor() {
     const router = useRouter();
-    const { id } = useParams();
+    const { id, idCard } = useParams();
     const [customer, setCustomer] = useState<Customer>();
     const [creditCard, setCreditCard] = useState<Cards>({number: "", expiration_date: moment().format("YYYY-MM"), cvv: "", customer_id: Number(id)});
     
-    useEffect(() => { axios.get(`/customers/${id}`).then(resp => setCustomer({ ...resp.data })) }, [])
+    useEffect(() => { 
+        axios.get(`/customers/${id}`).then(resp => setCustomer({ ...resp.data })) 
+        axios.get(`/creditcards/${idCard}`).then(resp => setCreditCard({ ...creditCard, ...resp.data })) 
+    }, [])
 
     //@ts-ignore
     const onChangeCard = (e: ChangeEvent<HTMLInputElement>) => setCreditCard({ ...creditCard, [e.target.name]: e.target.value })
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        axios.post("/creditcards", creditCard)
+        axios.put(`/creditcards/${idCard}`, creditCard)
             .then(() => router.push(`/customers/${id}`))
             .catch((error) => {
                 Swal.fire({
@@ -37,9 +40,9 @@ export default function CardCreate() {
     return (
         <main className="grid min-h-screen max-w-screen p-4 justify-center place-items-start">
             <Link href={`/customers/${id}`} className="self-end bg-red-600 text-white py-2 px-4 border-2 rounded-xl hover:bg-red-800 -rotate-12 z-10 w-[5rem] translate-y-5 -translate-x-5">Voltar</Link>
-            <form onSubmit={e => onSubmit(e)} className="shadow-lg border-2 overflow-hidden border-blue-500 rounded-3xl mx-auto max-w-xl sm:w-[30rem] flex flex-col">
-                <header className="px-8 py-4 bg-blue-400 text-white">
-                    <legend className="text-xl md:text-2xl font-bold truncate">Registrar Novo Cartão</legend>
+            <form onSubmit={e => onSubmit(e)} className="shadow-lg border-2 overflow-hidden border-yellow-500 rounded-3xl mx-auto max-w-xl sm:w-[30rem] flex flex-col">
+                <header className="px-8 py-4 bg-yellow-400 text-white">
+                    <legend className="text-xl md:text-2xl font-bold">Editar Cartão</legend>
                 </header>
                 <main className="px-8 py-4 flex flex-col gap-4 bg-white">
                     <div>
@@ -64,7 +67,7 @@ export default function CardCreate() {
                     </div>
                 </main>
                 <footer className="px-8 py-4 flex justify-center bg-white">
-                    <button type="submit" className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Cadastrar Cartão</button>
+                    <button type="submit" className="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Atualizar</button>
                 </footer>
             </form>
         </main>

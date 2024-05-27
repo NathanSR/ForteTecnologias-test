@@ -16,7 +16,7 @@ class CustomerController extends Controller
                 ->where('fullName', 'like', '%'.$request->query('filter').'%') //...onde nome completo contêm o valor do filtro...
                 ->paginate($limit); //...e criar paginação com o limite de retorno de dados por requisição
             
-            return response()->json($customersDB->items(), 200); //Retornar os itens filtrados e paginados
+            return response()->json($customersDB, 200); //Retornar os itens filtrados e paginados
 
         }catch(\Exception $e) { 
             return response()->json(["message"=> $e->getMessage()], 500);
