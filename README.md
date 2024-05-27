@@ -11,12 +11,14 @@ Comandos para iniciar o servidor em development mode:
 backend:
 ```bash
 $ cd backend-laravel
+$ composer install
 $ php artisen serve
 ```
 
 frontend:
 ```bash
 $ cd frontend-next
+$ npm install
 $ npm run dev
 ```
 
